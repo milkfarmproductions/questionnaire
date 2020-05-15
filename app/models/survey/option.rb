@@ -33,6 +33,10 @@ class Survey::Option < ActiveRecord::Base
     I18n.locale == I18n.default_locale ? super : locale_text.blank? ? super : locale_text
   end
 
+  def is_custom_input
+    options_type_id == Survey::OptionsType.options_types[:number]
+  end
+
   #######
 
   private

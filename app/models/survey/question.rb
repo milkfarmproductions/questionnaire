@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class Survey::Question < ActiveRecord::Base
+  include Paperclip::Glue
+
   self.table_name = 'survey_questions'
   # relations
+
+  # https://makandracards.com/makandra/1023-paperclip-image-resize-options
+  has_attached_file :icon, styles: { thumbnail: "400x140>" }
   has_many   :options
   has_many   :predefined_values
   has_many   :answers
@@ -22,11 +27,22 @@ class Survey::Question < ActiveRecord::Base
                                 allow_destroy: true
 
   # validations
+  validates_attachment :icon, content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
   validates :text, presence: true, allow_blank: false
   validates :questions_type_id, presence: true
   validates :questions_type_id, inclusion: { in: Survey::QuestionsType.questions_type_ids, unless: proc { |q| q.questions_type_id.blank? } }
 
   scope :mandatory_only, -> { where(mandatory: true) }
+
+  def icon_url
+    return nil if icon.blank?
+    "https://#{ENV['S3_BUCKET_NAME']}.s3.#{ENV['AWS_REGION']}.amazonaws.com#{icon.path}"
+  end
+
+  def icon_thumb_url
+    return nil if icon.blank?
+    "https://#{ENV['S3_BUCKET_NAME']}.s3.#{ENV['AWS_REGION']}.amazonaws.com#{icon.path(:thumbnail)}"
+  end
 
   def correct_options
     options.correct
