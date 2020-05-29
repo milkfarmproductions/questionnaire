@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+ruby '2.4.1'
+
+gem 'execjs'
+gem 'rails', '5.1'
+
+group :development, :test do
+  gem 'faker'
+  gem 'pry-rails'
+end
+
+gem 'sqlite3', '~> 1.3.13'
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'coffee-rails'
+  gem 'meta_search'
+  gem 'sass-rails'
+  gem 'uglifier'
+end
+
+gem 'jquery-rails'

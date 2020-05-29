@@ -6,6 +6,7 @@ class Survey::Survey < ActiveRecord::Base
   # relations
   has_many :attempts
   has_many :sections
+  has_many :questions, through: :sections
 
   # rails 3 attr_accessible support
   if Rails::VERSION::MAJOR < 4
@@ -25,6 +26,10 @@ class Survey::Survey < ActiveRecord::Base
   validates :description, :name, presence: true, allow_blank: false
   validate  :check_active_requirements
 
+  def self.active_by_identifier(identifier)
+    self.active.order(:created_at).where(identifier: identifier).last
+  end
+
   # returns all the correct options for current surveys
   def correct_options
     Survey::Question.where(section_id: section_ids).map(&:correct_options).flatten
@@ -33,6 +38,12 @@ class Survey::Survey < ActiveRecord::Base
   # returns all the incorrect options for current surveys
   def incorrect_options
     Survey::Question.where(section_id: sections.collect(&:id)).map(&:incorrect_options).flatten
+  end
+
+  def questions_as_collection
+    titled = {}
+    questions.map {|q| titled[q.text] = q.id}
+    titled
   end
 
   def avaliable_for_participant?(participant)

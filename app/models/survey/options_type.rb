@@ -9,10 +9,12 @@ class Survey::OptionsType
                       single_choice_with_text: 6,
                       multi_choices_with_number: 7,
                       single_choice_with_number: 8,
-                      large_text: 9 }
+                      large_text: 9}
+
+  @@supported_options_types = {single_choice: 2, number: 3}
 
   def self.options_types
-    @@options_types
+    @@supported_options_types
   end
 
   def self.options_types_title
@@ -22,11 +24,11 @@ class Survey::OptionsType
   end
 
   def self.options_type_ids
-    @@options_types.values
+    @@supported_options_types.values
   end
 
   def self.options_type_keys
-    @@options_types.keys
+    @@supported_options_types.keys
   end
 
   @@options_types.each do |key, val|

@@ -14,7 +14,10 @@ module Survey
                            { new_file_name: 'add_types_to_questions_and_options', origin_file_name: 'migration_add_types_to_questions_and_options' },
                            { new_file_name: 'add_head_number_to_options_table', origin_file_name: 'migration_add_head_number_to_options_table' },
                            { new_file_name: 'create_predefined_values_table', origin_file_name: 'migration_create_predefined_values_table' },
-                           { new_file_name: 'add_mandatory_to_questions_table', origin_file_name: 'migration_add_mandatory_to_questions_table' }]
+                           { new_file_name: 'add_mandatory_to_questions_table', origin_file_name: 'migration_add_mandatory_to_questions_table' },
+                           { new_file_name: 'add_fields_to_survey_tables', origin_file_name: 'migration_add_fields_to_survey_tables' },
+                           { new_file_name: 'add_identifier_to_sections_table', origin_file_name: 'migration_add_identifier_to_sections_table' },
+                          ]
 
         migration_files.each do |migration_file|
           unless already_exists?(migration_file[:new_file_name])

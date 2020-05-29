@@ -23,12 +23,13 @@ ActiveAdmin.register Survey::Survey do
     column :attempts_number
     column :finished
     column :created_at
-    default_actions
+    actions
   end
 
   form do |f|
     f.inputs I18n.t('survey_details') do
       f.input  :name
+      f.input  :identifier
       f.input  :locale_name
       f.input  :description
       f.input  :locale_description
@@ -44,16 +45,21 @@ ActiveAdmin.register Survey::Survey do
         s.input :locale_name
         s.input :description
         s.input :locale_description
+        s.input :identifier
+        s.input :position
 
         s.has_many :questions do |q|
           q.input :head_number
           q.input :locale_head_number
           q.input :text
           q.input :locale_text
+          q.input :icon, as: :file
           q.input :description
           q.input :locale_description
           q.input :questions_type_id, as: :select, collection: Survey::QuestionsType.questions_types_title
           q.input :mandatory
+          q.input :skip_to_question_id, as: :select, collection: f.object.questions_as_collection unless f.object.new_record?
+          q.input :position
 
           q.inputs I18n.t('predefined_values') do
             q.has_many :predefined_values do |p|
@@ -68,13 +74,15 @@ ActiveAdmin.register Survey::Survey do
             a.input :text
             a.input :locale_text
             a.input :options_type_id, as: :select, collection: Survey::OptionsType.options_types_title
+            a.input :next_question_id, as: :select, collection: f.object.questions_as_collection unless f.object.new_record?
+            a.input :position
             a.input :correct
           end
         end
       end
     end
 
-    f.buttons
+    f.actions
   end
 
   if Rails::VERSION::MAJOR >= 4

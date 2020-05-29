@@ -17,10 +17,14 @@ Gem::Specification.new do |s|
   s.require_paths = %w[lib]
 
   s.add_dependency('rails', '~> 5.1')
+  s.add_dependency('paperclip', '~> 5.0.0')
   s.add_development_dependency('mocha')
   s.add_development_dependency('faker')
   s.add_development_dependency('rake')
   s.add_development_dependency('rubocop')
   s.add_development_dependency('pry-rails')
   s.add_development_dependency('pry-byebug')
+  s.add_development_dependency('rspec')
+  s.add_development_dependency('rspec-rails')
+  s.add_development_dependency('factory_bot_rails')
 end

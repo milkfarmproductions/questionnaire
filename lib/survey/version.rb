@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Survey
-  VERSION = '0.1'
+  VERSION = '1.7'
 end

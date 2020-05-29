@@ -5,7 +5,6 @@ ruby '2.1.5'
 
 gem 'execjs'
 gem 'rails', '3.1'
-gem 'therubyracer'
 
 group :development, :test do
   gem 'faker'

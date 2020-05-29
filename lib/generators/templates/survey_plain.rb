@@ -41,7 +41,7 @@ class <%= get_scope.capitalize %>::SurveysController < ApplicationController
   def load_survey
     @survey = Survey::Survey.find(params[:id])
   end
-  
+
   #######
   private
   #######
