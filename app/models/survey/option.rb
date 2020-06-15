@@ -37,6 +37,16 @@ class Survey::Option < ActiveRecord::Base
     options_type_id == Survey::OptionsType.options_types[:number]
   end
 
+  def has_formula?
+    weight_formula.present?
+  end
+
+  def weight_from_formula(score)
+    return nil unless has_formula?
+
+    eval(weight_formula)
+  end
+
   #######
 
   private
