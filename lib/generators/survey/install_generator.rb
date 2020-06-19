@@ -18,6 +18,7 @@ module Survey
                            { new_file_name: 'add_fields_to_survey_tables', origin_file_name: 'migration_add_fields_to_survey_tables' },
                            { new_file_name: 'add_identifier_to_sections_table', origin_file_name: 'migration_add_identifier_to_sections_table' },
                            { new_file_name: 'update_options', origin_file_name: 'migration_update_options' },
+                           { new_file_name: 'update_options2', origin_file_name: 'migration_update_options2' },
                           ]
 
         migration_files.each do |migration_file|

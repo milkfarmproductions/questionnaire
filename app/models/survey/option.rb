@@ -41,7 +41,11 @@ class Survey::Option < ActiveRecord::Base
     weight_formula.present?
   end
 
-  def weight_from_formula(score)
+  def value_for_answer(answer)
+    weight_from_formula(answer.option_number) || weight
+  end
+
+  def weight_from_formula(option_number)
     return nil unless has_formula?
 
     eval(weight_formula)

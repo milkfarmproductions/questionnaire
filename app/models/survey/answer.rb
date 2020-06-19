@@ -23,18 +23,15 @@ class Survey::Answer < ActiveRecord::Base
   before_save :check_single_choice_with_field_case
 
   def value
-    # TODO: number type option should calculate the value based on custom formula
-    #       but this is a separate story, because we don't have the rules yet
-
-    if option.nil?
-      Survey::Option.find(option_id).weight
-    else
-      option.weight
-    end
+    option.value_for_answer(self)
   end
 
   def correct?
     correct || option.correct?
+  end
+
+  def text
+    option.text
   end
 
   #######
