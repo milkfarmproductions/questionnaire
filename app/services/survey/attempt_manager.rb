@@ -12,7 +12,7 @@ class Survey::AttemptManager
     ActiveRecord::Base.transaction do
       cancel_previous_attempts!
 
-      survey = Survey::Survey.active_by_identifier(identifier)
+      survey = Survey::Survey.active_by_identifier!(identifier)
       @attempt = Survey::Attempt.create!(participant: @user, survey: survey)
     end
   end

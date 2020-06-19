@@ -26,8 +26,8 @@ class Survey::Survey < ActiveRecord::Base
   validates :description, :name, presence: true, allow_blank: false
   validate  :check_active_requirements
 
-  def self.active_by_identifier(identifier)
-    self.active.order(:created_at).where(identifier: identifier).last
+  def self.active_by_identifier!(identifier)
+    self.active.order(:created_at).where(identifier: identifier).last!
   end
 
   # returns all the correct options for current surveys
