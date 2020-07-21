@@ -31,7 +31,7 @@ class Survey::Answer < ActiveRecord::Base
   end
 
   def text
-    option.text + 'as'
+    option.question.text
   end
 
   #######
