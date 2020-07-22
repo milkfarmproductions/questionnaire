@@ -55,7 +55,7 @@ class Survey::Option < ActiveRecord::Base
     question = Survey::Question.find_by_id(question_id)
     answer = question.answers.where(attempt_id: @current_attempt_id).last
 
-    answer.present ? answer.value : 0
+    answer.present? ? answer.value : 0
   end
 
   #######
