@@ -115,35 +115,10 @@ class Survey::Attempt < ActiveRecord::Base
     end
     
     grouped_answers.map do |category, answers|
-      if category == 'Diet'
-        diet_score = 
-        {
-          identifier: category,
-          score: answers.map(&:value).map(&:to_f).reduce(:+)
-        }
-      else
-        utility_score = 0
-        total_energy_value = 0
-        renewable_energy_multiplayer = 1
-
-        answers.map do |answer|
-          question = Survey::Question.find_by_id(answer.question_id)
-          if question 
-            if question.text.include?("renewable")
-              renewable_energy_multiplayer = answer.value
-            end
-            if question.text.include?("home") || question.text.include?("much electricity")
-              total_energy_value = answer.value
-            end
-          end
-
-          utility_score = total_energy_value.to_f * renewable_energy_multiplayer.to_f
-        end
-        {
-          identifier: category,
-          score: utility_score, 
-        }
-      end
+      {
+        identifier: category,
+        score: answers.map(&:value).map(&:to_f).reduce(:+)
+      }
     end
   end
 

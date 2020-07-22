@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'pp'
 
 class Survey::Option < ActiveRecord::Base
   self.table_name = 'survey_options'
@@ -42,13 +43,20 @@ class Survey::Option < ActiveRecord::Base
   end
 
   def value_for_answer(answer)
+    @current_attempt_id = answer.attempt_id
     weight_from_formula(answer.option_number) || weight
   end
 
   def weight_from_formula(option_number)
     return nil unless has_formula?
-
     eval(weight_formula)
+  end
+
+  def value_for_question(question_id)
+    question = Survey::Question.find_by_id(question_id)
+    answer = question.answers.where(attempt_id: @current_attempt_id).last
+
+    answer.present? ? answer.value : 0
   end
 
   #######
