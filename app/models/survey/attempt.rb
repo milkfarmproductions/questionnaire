@@ -109,11 +109,41 @@ class Survey::Attempt < ActiveRecord::Base
   end
 
   def score_by_section
-    survey.sections.map do |section|
-      {
-        identifier: section.identifier,
-        score: (section.questions.map {|q| q.answers.map(&:value).reduce(:+) }).map(&:to_f).reduce(:+)
-      }
+    answers_with_questions = self.answers.includes(question: :section)
+    grouped_answers = answers_with_questions.group_by do |answer|
+      answer.question.section.name
+    end
+    
+    grouped_answers.map do |category, answers|
+      if category == 'Diet'
+        diet_score = 
+        {
+          identifier: category,
+          score: answers.map(&:value).map(&:to_f).reduce(:+)
+        }
+      else
+        utility_score = 0
+        total_energy_value = 0
+        renewable_energy_multiplayer = 1
+
+        answers.map do |answer|
+          question = Survey::Question.find_by_id(answer.question_id)
+          if question 
+            if question.text.include?("renewable")
+              renewable_energy_multiplayer = answer.value
+            end
+            if question.text.include?("home") || question.text.include?("much electricity")
+              total_energy_value = answer.value
+            end
+          end
+
+          utility_score = total_energy_value.to_f * renewable_energy_multiplayer.to_f
+        end
+        {
+          identifier: category,
+          score: utility_score, 
+        }
+      end
     end
   end
 
@@ -198,8 +228,11 @@ class Survey::Attempt < ActiveRecord::Base
                                                       questions_type_id: Survey::QuestionsType.multi_select
                                                     })
     if multi_select_questions.empty? # No multi-select questions
-      raw_score = answers.map(&:value).reduce(:+)
-      self.score = raw_score
+      total_scores_by_section = score_by_section
+      raw_score = total_scores_by_section.map do |section|
+        section[:score]
+      end
+      self.score = raw_score.reduce(:+)
     else
       # Initial score without multi-select questions
       raw_score = answers.where.not(question_id: multi_select_questions.ids).map(&:value).reduce(:+) || 0
