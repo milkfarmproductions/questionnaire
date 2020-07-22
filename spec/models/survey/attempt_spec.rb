@@ -53,16 +53,7 @@ RSpec.describe Survey::Attempt, type: :model do
   describe '#score_by_section' do
     context "when user didn't anwser any question" do
       it 'returns zeroes grouped by sections' do
-        expect(subject.score_by_section).to eq([
-          {
-            identifier: 'S1',
-            score: 0
-          },
-          {
-            identifier: 'S2',
-            score: 0
-          },
-        ])
+        expect(subject.score_by_section).to eq([])
       end
     end
 
@@ -83,11 +74,11 @@ RSpec.describe Survey::Attempt, type: :model do
       it 'returns sum of answers score grouped by sections' do
         expect(subject.score_by_section).to eq([
           {
-            identifier: 'S1',
+            identifier: 'Section no. 5',
             score: 4
           },
           {
-            identifier: 'S2',
+            identifier: 'Section no. 6',
             score: 4
           },
         ])

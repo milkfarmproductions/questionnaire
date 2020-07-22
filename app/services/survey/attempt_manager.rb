@@ -18,9 +18,19 @@ class Survey::AttemptManager
   end
 
   def edit(section)
+    remove_answers_for_section(section)
+
     @attempt.current_section = section
     @attempt.current_question = @attempt.first_question_in_current_section
     @attempt.save!
+  end
+
+  def remove_answers_for_section(section)
+    section.questions.each do |question|
+      question.answers.where(
+        attempt: @attempt,
+      ).each(&:destroy!)
+    end
   end
 
   def process_answer(params)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200519215415) do
+ActiveRecord::Schema.define(version: 20200723104423) do
 
   create_table "lessons", force: :cascade do |t|
     t.string "name"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20200519215415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "option_text"
-    t.integer "option_number"
+    t.decimal "option_number"
     t.integer "predefined_value_id"
   end
 
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20200519215415) do
 
   create_table "survey_options", force: :cascade do |t|
     t.integer "question_id"
-    t.integer "weight", default: 0
+    t.decimal "weight", default: "0.0"
     t.string "text"
     t.boolean "correct"
     t.datetime "created_at", null: false
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20200519215415) do
     t.string "head_number"
     t.integer "next_question_id"
     t.integer "position"
+    t.string "weight_formula"
   end
 
   create_table "survey_predefined_values", force: :cascade do |t|
