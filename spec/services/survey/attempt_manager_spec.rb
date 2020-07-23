@@ -73,13 +73,30 @@ describe Survey::AttemptManager do
 
   describe '#edit' do
     let!(:current_question) { section_one.questions.last }
+    let!(:question2) { section_two.questions.last }
     let!(:attempt) do
-      FactoryBot.create(
+      create(
         :attempt,
         survey: survey,
         current_section: nil,
         current_question: current_question,
         participant: user
+      )
+    end
+    let!(:answer1) do
+      create(
+        :answer,
+        attempt: attempt,
+        question: current_question,
+        option: current_question.options.first
+      )
+    end
+    let!(:answer2) do
+      create(
+        :answer,
+        attempt: attempt,
+        question: question2,
+        option: question2.options.first
       )
     end
 
@@ -93,6 +110,13 @@ describe Survey::AttemptManager do
     it "sets current question to first section's questions" do
       subject.edit(section_two)
       expect(attempt.current_question.id).to eq(section_two.questions.first.id)
+    end
+
+    it "should delete old answers" do
+      subject.edit(section_one)
+
+      expect(Survey::Answer.exists?(answer1.id)).to eq(false)
+      expect(Survey::Answer.exists?(answer2.id)).to eq(true)
     end
   end
 
