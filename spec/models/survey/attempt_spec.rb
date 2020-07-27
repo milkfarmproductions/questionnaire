@@ -74,11 +74,11 @@ RSpec.describe Survey::Attempt, type: :model do
       it 'returns sum of answers score grouped by sections' do
         expect(subject.score_by_section).to eq([
           {
-            identifier: 'Section no. 5',
+            identifier: 'S1',
             score: 4
           },
           {
-            identifier: 'Section no. 6',
+            identifier: 'S2',
             score: 4
           },
         ])

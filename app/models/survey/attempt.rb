@@ -111,9 +111,9 @@ class Survey::Attempt < ActiveRecord::Base
   def score_by_section
     answers_with_questions = self.answers.includes(question: :section)
     grouped_answers = answers_with_questions.group_by do |answer|
-      answer.question.section.name
+      answer.question.section.identifier
     end
-    
+
     grouped_answers.map do |category, answers|
       {
         identifier: category,
