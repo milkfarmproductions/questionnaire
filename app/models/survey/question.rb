@@ -67,4 +67,8 @@ class Survey::Question < ActiveRecord::Base
   def mandatory?
     mandatory == true
   end
+
+  def sorted_options
+    options.sort_by(&:position)
+  end
 end
